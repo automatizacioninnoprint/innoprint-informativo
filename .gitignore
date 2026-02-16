@@ -1,0 +1,30 @@
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+.AppleDouble
+.LSOverride
+
+# Carpetas del sistema
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# Dependencias (si las añades en el futuro)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Archivos temporales
+.temp/
+tmp/
+temp/
+
+# Configuración personal
+.env
+.env.local
