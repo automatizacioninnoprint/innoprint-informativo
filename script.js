@@ -9,6 +9,45 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   });
 });
 
+// ========== Modal para Ver Imágenes a Pantalla Completa ==========
+const imageModal = document.getElementById("imageModal");
+const modalImage = document.getElementById("modalImage");
+const modalClose = document.querySelector(".modal-close");
+
+// Hacer click en imágenes del sitio para abrirlas en modal
+document.querySelectorAll(".galeria-img, .recognition-image").forEach((img) => {
+  img.addEventListener("click", function (e) {
+    e.stopPropagation();
+    modalImage.src = this.src;
+    imageModal.classList.add("active");
+    document.body.style.overflow = "hidden";
+  });
+  img.style.cursor = "pointer";
+});
+
+// Cerrar modal cuando se hace click en el botón X
+modalClose.addEventListener("click", function (e) {
+  e.stopPropagation();
+  imageModal.classList.remove("active");
+  document.body.style.overflow = "auto";
+});
+
+// Cerrar modal cuando se hace click fuera de la imagen
+imageModal.addEventListener("click", function (e) {
+  if (e.target === imageModal) {
+    imageModal.classList.remove("active");
+    document.body.style.overflow = "auto";
+  }
+});
+
+// Cerrar modal con tecla ESC
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape" && imageModal.classList.contains("active")) {
+    imageModal.classList.remove("active");
+    document.body.style.overflow = "auto";
+  }
+});
+
 // ========== Animación al scroll para elementos ==========
 const observerOptions = {
   threshold: 0.1,

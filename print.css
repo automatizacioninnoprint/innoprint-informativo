@@ -1,0 +1,116 @@
+/* ========== Print Styles ========== */
+
+@media print {
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body {
+    background: white;
+    color: black;
+    font-size: 11pt;
+  }
+
+  .header {
+    background: #0f1419 !important;
+    color: white;
+    margin-bottom: 20px;
+  }
+
+  .header-info {
+    display: none;
+  }
+
+  .section {
+    page-break-inside: avoid;
+    padding: 20px 0;
+    background: white !important;
+  }
+
+  .section-header {
+    page-break-after: avoid;
+  }
+
+  .highlight-card,
+  .news-card,
+  .benefit-item,
+  .staff-card,
+  .training-card,
+  .recognition-box {
+    page-break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+  }
+
+  .footer {
+    background: #0f1419 !important;
+    color: white;
+    margin-top: 30px;
+    border-top: 2px solid #ff6b35;
+  }
+
+  a {
+    color: #0066cc;
+    text-decoration: underline;
+  }
+
+  .logo {
+    width: 60px;
+    height: 60px;
+  }
+
+  /* Ocultar elementos innecesarios en impresión */
+  .share-button,
+  [style*="fixed"] {
+    display: none !important;
+  }
+
+  /* Ajustar tablas */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    border: 1px solid #999;
+    padding: 8px;
+  }
+
+  thead {
+    background: #f0f0f0;
+  }
+
+  /* Evitar saltos de página en elementos */
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+
+  /* Optimizar fuentes */
+  body {
+    font-family: "Times New Roman", Times, serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Arial", sans-serif;
+  }
+}
+
+/* ========== Pantalla en B&W ========== */
+@media print and (color-gamut: srgb) {
+  .header {
+    background: #333 !important;
+  }
+
+  .footer {
+    background: #333 !important;
+  }
+}

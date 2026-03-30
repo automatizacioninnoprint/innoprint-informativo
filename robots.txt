@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tu-usuario.github.io/innoprint-informativo/sitemap.xml
+
+# Reglas específicas
+User-agent: *
+Disallow: 
+
+# Permitir todas las búsquedas
+Allow: /
+
+# Crawl-delay para evitar sobrecarga
+Crawl-delay: 1
