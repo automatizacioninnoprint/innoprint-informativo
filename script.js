@@ -9,45 +9,6 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   });
 });
 
-// ========== Modal para Ver Imágenes a Pantalla Completa ==========
-const imageModal = document.getElementById("imageModal");
-const modalImage = document.getElementById("modalImage");
-const modalClose = document.querySelector(".modal-close");
-
-// Hacer click en imágenes del sitio para abrirlas en modal
-document.querySelectorAll(".galeria-img, .recognition-image").forEach((img) => {
-  img.addEventListener("click", function (e) {
-    e.stopPropagation();
-    modalImage.src = this.src;
-    imageModal.classList.add("active");
-    document.body.style.overflow = "hidden";
-  });
-  img.style.cursor = "pointer";
-});
-
-// Cerrar modal cuando se hace click en el botón X
-modalClose.addEventListener("click", function (e) {
-  e.stopPropagation();
-  imageModal.classList.remove("active");
-  document.body.style.overflow = "auto";
-});
-
-// Cerrar modal cuando se hace click fuera de la imagen
-imageModal.addEventListener("click", function (e) {
-  if (e.target === imageModal) {
-    imageModal.classList.remove("active");
-    document.body.style.overflow = "auto";
-  }
-});
-
-// Cerrar modal con tecla ESC
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Escape" && imageModal.classList.contains("active")) {
-    imageModal.classList.remove("active");
-    document.body.style.overflow = "auto";
-  }
-});
-
 // ========== Animación al scroll para elementos ==========
 const observerOptions = {
   threshold: 0.1,
@@ -312,3 +273,104 @@ const toggleDarkMode = () => {
 // darkModeToggle.style.cssText = `...`;
 // darkModeToggle.addEventListener('click', toggleDarkMode);
 // document.body.appendChild(darkModeToggle);
+
+// ========== Lightbox para ampliar fotos ==========
+const initLightbox = () => {
+  console.log("🎬 Iniciando Lightbox...");
+
+  // Obtener todas las imágenes de la galería
+  const galleryImages = document.querySelectorAll(".galeria-img");
+  console.log("📸 Imágenes encontradas:", galleryImages.length);
+
+  if (galleryImages.length === 0) {
+    console.warn("⚠️ No se encontraron imágenes con clase 'galeria-img'");
+    return;
+  }
+
+  // Crear modal
+  const lightboxModal = document.createElement("div");
+  lightboxModal.className = "lightbox-modal";
+  lightboxModal.innerHTML = `
+    <div class="lightbox-content">
+      <button class="lightbox-close">&times;</button>
+      <button class="lightbox-nav lightbox-prev">❮</button>
+      <img class="lightbox-img" src="" alt="" />
+      <button class="lightbox-nav lightbox-next">❯</button>
+      <div class="lightbox-counter"><span class="current">1</span> / <span class="total">1</span></div>
+    </div>
+  `;
+  document.body.appendChild(lightboxModal);
+  console.log("✅ Modal creado");
+
+  // Referencias
+  const closeBtn = lightboxModal.querySelector(".lightbox-close");
+  const prevBtn = lightboxModal.querySelector(".lightbox-prev");
+  const nextBtn = lightboxModal.querySelector(".lightbox-next");
+  const lightboxImg = lightboxModal.querySelector(".lightbox-img");
+  const counterCurrent = lightboxModal.querySelector(".current");
+  const counterTotal = lightboxModal.querySelector(".total");
+
+  const imagesSrc = Array.from(galleryImages).map((img) => img.src);
+  let currentIndex = 0;
+
+  // Establecer total
+  counterTotal.textContent = imagesSrc.length;
+
+  // Función para mostrar imagen
+  const showImage = (index) => {
+    if (index >= 0 && index < imagesSrc.length) {
+      currentIndex = index;
+      lightboxImg.src = imagesSrc[currentIndex];
+      counterCurrent.textContent = currentIndex + 1;
+      console.log("🖼️ Imagen mostrada:", currentIndex + 1);
+    }
+  };
+
+  // Abrir lightbox al hacer clic en imagen
+  galleryImages.forEach((img, index) => {
+    img.style.cursor = "pointer";
+    img.addEventListener("click", () => {
+      console.log("🖱️ Click en imagen", index);
+      lightboxModal.classList.add("active");
+      showImage(index);
+    });
+  });
+
+  // Cerrar lightbox
+  const closeLightbox = () => {
+    lightboxModal.classList.remove("active");
+    console.log("❌ Lightbox cerrado");
+  };
+
+  closeBtn.addEventListener("click", closeLightbox);
+  lightboxModal.addEventListener("click", (e) => {
+    if (e.target === lightboxModal) {
+      closeLightbox();
+    }
+  });
+
+  // Navegación
+  prevBtn.addEventListener("click", () => {
+    let newIndex = currentIndex - 1;
+    if (newIndex < 0) newIndex = imagesSrc.length - 1;
+    showImage(newIndex);
+  });
+
+  nextBtn.addEventListener("click", () => {
+    let newIndex = currentIndex + 1;
+    if (newIndex >= imagesSrc.length) newIndex = 0;
+    showImage(newIndex);
+  });
+
+  // Teclado
+  document.addEventListener("keydown", (e) => {
+    if (!lightboxModal.classList.contains("active")) return;
+
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowLeft") prevBtn.click();
+    if (e.key === "ArrowRight") nextBtn.click();
+  });
+};
+
+// Inicializar lightbox cuando carga la página
+window.addEventListener("load", initLightbox);
